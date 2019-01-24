@@ -50,11 +50,14 @@ function CHtmlEditorView(oOptions)
 	this.toolbarDom = ko.observable();
 	this.colorPickerDropdownDom = ko.observable();
 	this.insertLinkDropdownDom = ko.observable();
+	this.insertImageDropdownDom = ko.observable();
 
     this.isFWBold = ko.observable(false);
     this.isFSItalic = ko.observable(false);
     this.isTDUnderline = ko.observable(false);
     this.isTDStrikeThrough = ko.observable(false);
+    this.isEnumeration = ko.observable(false);
+    this.isBullets = ko.observable(false);
 
 	this.isEnable = ko.observable(true);
 	this.isEnable.subscribe(function () {
@@ -456,6 +459,8 @@ CHtmlEditorView.prototype.setFontValuesFromText = function ()
     this.isFSItalic(this.oCrea.getIsItalic());
     this.isTDUnderline(this.oCrea.getIsUnderline());
     this.isTDStrikeThrough(this.oCrea.getIsStrikeThrough());
+    this.isEnumeration(this.oCrea.getIsEnumeration());
+    this.isBullets(this.oCrea.getIsBullets());
 	this.selectedFont(this.oCrea.getFontName());
 	this.selectedSize(this.oCrea.getFontSizeInNumber().toString());
 	this.lockFontSubscribing(false);
@@ -489,7 +494,7 @@ CHtmlEditorView.prototype.getText = function (bRemoveSignatureAnchor)
 	var
 		sText = this.oCrea ? this.oCrea.getText(bRemoveSignatureAnchor) : ''
 	;
-	return this.removeAllTags(sText) === this.sPlaceholderText ? '' : sText;
+	return (this.sPlaceholderText !== '' && this.removeAllTags(sText) === this.sPlaceholderText) ? '' : sText;
 };
 
 /**
@@ -1097,6 +1102,8 @@ CHtmlEditorView.prototype.numbering = function ()
 	if (!this.inactive())
 	{
 		this.oCrea.numbering();
+        this.isBullets(false);
+        this.isEnumeration(!this.isEnumeration());
 	}
 	return false;
 };
@@ -1106,6 +1113,8 @@ CHtmlEditorView.prototype.bullets = function ()
 	if (!this.inactive())
 	{
 		this.oCrea.bullets();
+        this.isEnumeration(false);
+        this.isBullets(!this.isBullets());
 	}
 	return false;
 };

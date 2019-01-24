@@ -307,7 +307,7 @@ CCrea.prototype.editableSave = function ()
         oLastSaved = _.last(this.aEditableAreaHtml),
         sLastSaved = oLastSaved ? oLastSaved[0] : ''
     ;
-
+	
     if (sEditableHtml !== sLastSaved)
     {
         this.clearRedo();
@@ -747,6 +747,7 @@ CCrea.prototype.setText = function (sText)
         }
 
         this.$editableArea.empty().append(oText).css('white-space', 'normal');
+		this.clearUndoRedo();
         this.editableSave();
     }
 };
@@ -1488,7 +1489,7 @@ CCrea.prototype.getIsBold = function ()
 /**
  * Gets is font-style italic.
  *
- * @return {string}
+ * @return {boolean}
  */
 CCrea.prototype.getIsItalic = function ()
 {
@@ -1503,7 +1504,7 @@ CCrea.prototype.getIsItalic = function ()
 /**
  * Gets is text-decoration underline.
  *
- * @return {string}
+ * @return {boolean}
  */
 CCrea.prototype.getIsUnderline = function ()
 {
@@ -1516,9 +1517,39 @@ CCrea.prototype.getIsUnderline = function ()
 };
 
 /**
+ * Gets is ordered list active.
+ *
+ * @return {boolean}
+ */
+CCrea.prototype.getIsEnumeration = function ()
+{
+    if (this.bEditable)
+    {
+        var bIsEnumeration = window.document.queryCommandState('insertOrderedList');
+    }
+
+    return bIsEnumeration;
+};
+
+/**
+ * Gets is unordered list active.
+ *
+ * @return {boolean}
+ */
+CCrea.prototype.getIsBullets = function ()
+{
+    if (this.bEditable)
+    {
+        var bIsBullets = window.document.queryCommandState('insertUnorderedList');
+    }
+
+    return bIsBullets;
+};
+
+/**
  * Gets is text-decoration strike-through.
  *
- * @return {string}
+ * @return {boolean}
  */
 CCrea.prototype.getIsStrikeThrough = function ()
 {
@@ -1682,6 +1713,7 @@ CCrea.prototype.removeCurrentImage = function ()
         this.bInImage = false;
         this.oOptions.onImageBlur();
     }
+	this.setFocus(true);
 };
 
 CCrea.prototype.changeCurrentImage = function (aParams)
@@ -1693,6 +1725,7 @@ CCrea.prototype.changeCurrentImage = function (aParams)
             image.css(key, value);
         });
     }
+	this.setFocus(true);
 };
 
 CCrea.prototype.showImageTooltip = function (aParams)

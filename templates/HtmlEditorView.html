@@ -58,11 +58,11 @@
 
 			<span class="separator"></span>
 
-			<a href="javascript:void(0);" class="item slist" data-bind="click: numbering, customTooltip: '%MODULENAME%/ACTION_SET_NUMBERING'">
+			<a href="javascript:void(0);" class="item slist" data-bind="click: numbering, customTooltip: '%MODULENAME%/ACTION_SET_NUMBERING', css: { active: isEnumeration() }">
 				<span class="icon"></span>
 			</a>
 
-			<a href="javascript:void(0);" class="item uslist" data-bind="click: bullets, customTooltip: '%MODULENAME%/ACTION_SET_BULLETS'">
+			<a href="javascript:void(0);" class="item uslist" data-bind="click: bullets, customTooltip: '%MODULENAME%/ACTION_SET_BULLETS', css: { active: isBullets() }">
 				<span class="icon"></span>
 			</a>
 
@@ -76,7 +76,8 @@
 					<span class="dropdown_helper">
 						<span class="dropdown_content">
 							<span data-bind="i18n: {'key': '%MODULENAME%/LABEL_URL'}"></span>:
-							<input class="input" type="text" data-bind="value: linkForInsert, hasfocus: linkFocused, onFocusSelect: true, onEnter: insertLinkFromPopup" />
+							<!--<input class="input" type="text" data-bind="value: linkForInsert, hasfocus: linkFocused, onFocusSelect: true, onEnter: insertLinkFromPopup" />-->
+							<input class="input" type="text" data-bind="value: linkForInsert, hasfocus: linkFocused, onFocusSelect: true" />
 							<span class="button" data-bind="click: insertLinkFromPopup, i18n: {'key': '%MODULENAME%/ACTION_INSERT'}"></span>
 							<span class="button" data-bind="click: closeInsertLinkPopup, i18n: {'key': 'COREWEBCLIENT/ACTION_CANCEL'}"></span>
 						</span>
@@ -85,7 +86,7 @@
 			</a>
 
 			<a href="javascript:void(0);" class="item image" data-bind="click: insertImage, 
-					visible: bAllowInsertImage, css: {'expand': visibleInsertImagePopup}, customTooltip: '%MODULENAME%/ACTION_INSERT_IMAGE'">
+					visible: bAllowInsertImage, css: {'expand': visibleInsertImagePopup}, initDom: insertImageDropdownDom, customTooltip: '%MODULENAME%/ACTION_INSERT_IMAGE'">
 				<span class="icon"></span>
 
 				<span class="dropdown">
@@ -134,7 +135,7 @@
 		 text: tooltipText"></div>
 	
 	<div class="inline_popup" data-bind="visible: visibleLinkPopup, initDom: linkPopupDom">
-		<a target="_blank" data-bind="text: linkHref, attr: {'href': linkHref}"></a>
+		<a target="_blank" data-bind="text: linkHref, attr: {'href': linkHref}, click: function () { hideLinkPopup(); return true; }"></a>
 		<span class="button" data-bind="i18n: {'key': '%MODULENAME%/ACTION_CHANGE_URL'}, click: showChangeLink"></span>
 		<span class="button" data-bind="i18n: {'key': 'COREWEBCLIENT/ACTION_REMOVE'}, click: function () { oCrea.removeCurrentLink(); }"></span>
 	</div>
